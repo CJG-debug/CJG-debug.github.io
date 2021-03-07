@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="数据结构," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="定义树状数组(Binary Indexed Tree(B.I.T), Fenwick Tree)是一个查询和修改复杂度都为log(n)的数据结构。主要用于查询任意两位之间的所有元素之和，但是每次只能修改一个元素的值；经过简单修改可以在log(n)的复杂度下进行范围修改，但是这时只能查询其中一个元素的值(如果加入多个辅助数组则可以实现区间修改与区间查询)。 —— by baidu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="树状数组学习笔记">
+<meta property="og:url" content="CJG-debug.github.io/2020/07/26/2020-07-26-树状数组学习笔记/index.html">
+<meta property="og:site_name" content="Scarecrow">
+<meta property="og:description" content="定义树状数组(Binary Indexed Tree(B.I.T), Fenwick Tree)是一个查询和修改复杂度都为log(n)的数据结构。主要用于查询任意两位之间的所有元素之和，但是每次只能修改一个元素的值；经过简单修改可以在log(n)的复杂度下进行范围修改，但是这时只能查询其中一个元素的值(如果加入多个辅助数组则可以实现区间修改与区间查询)。 —— by baidu">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200726220329744.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NxYnpfQ2hlbkppYWdl,size_16,color_FFFF11,t_70">
+<meta property="og:updated_time" content="2021-02-11T05:44:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="树状数组学习笔记">
+<meta name="twitter:description" content="定义树状数组(Binary Indexed Tree(B.I.T), Fenwick Tree)是一个查询和修改复杂度都为log(n)的数据结构。主要用于查询任意两位之间的所有元素之和，但是每次只能修改一个元素的值；经过简单修改可以在log(n)的复杂度下进行范围修改，但是这时只能查询其中一个元素的值(如果加入多个辅助数组则可以实现区间修改与区间查询)。 —— by baidu">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200726220329744.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NxYnpfQ2hlbkppYWdl,size_16,color_FFFF11,t_70">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="CJG-debug.github.io/2020/07/26/2020-07-26-树状数组学习笔记/"/>
+
+
+
+
+
+  <title>树状数组学习笔记 | Scarecrow</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Scarecrow</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">nevergiveup</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Accueil
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="CJG-debug.github.io/2020/07/26/2020-07-26-树状数组学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chenjg41">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Scarecrow">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">树状数组学习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posté le</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-26T00:00:00+08:00">
+                2020-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>树状数组(Binary Indexed Tree(B.I.T), Fenwick Tree)是一个查询和修改复杂度都为log(n)的数据结构。主要用于查询任意两位之间的所有元素之和，但是每次只能修改一个元素的值；经过简单修改可以在log(n)的复杂度下进行范围修改，但是这时只能查询其中一个元素的值(如果加入多个辅助数组则可以实现区间修改与区间查询)。 —— by baidu<a id="more"></a></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>用一个数组$bit[i]$表示从$[i - lowbit(x) + 1, x]$中的所有的数的和。<br>如下图：<br><img src="https://img-blog.csdnimg.cn/20200726220329744.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NxYnpfQ2hlbkppYWdl,size_16,color_FFFF11,t_70" alt="在这里插入图片描述"></p>
+<h4 id="lowbit操作"><a href="#lowbit操作" class="headerlink" title="lowbit操作"></a>lowbit操作</h4><p>$lowbit$表示一个数在二进制中只保留最后一位1及其以后的0所表示的数字。<br>常用的方法：<br>先将原数取反再与上原数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> x &amp; (-x);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="update操作"><a href="#update操作" class="headerlink" title="update操作"></a>update操作</h4><p>$update$是单点修改操作，可以修改任意一个点上的数值，并进行全局维护。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x;i &lt;= n; i += lowbit(i)) </div><div class="line">		bit[i] += y;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Sum操作"><a href="#Sum操作" class="headerlink" title="Sum操作"></a>Sum操作</h4><p>$Sum(x)$是将从$1 -x$的所有数值的和累加起来：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">Sum</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">	<span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x; i; i -= lowbit(i))</div><div class="line">		ans += bit[i];</div><div class="line">	<span class="keyword">return</span> ans;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="常用模板"><a href="#常用模板" class="headerlink" title="常用模板"></a>常用模板</h3><h4 id="单点修改，区间查询"><a href="#单点修改，区间查询" class="headerlink" title="单点修改，区间查询"></a>单点修改，区间查询</h4><p>基本操作<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1e6</span> + <span class="number">5</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n, q;</div><div class="line"><span class="keyword">long</span> <span class="keyword">long</span> a, bit[MAXN];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> x &amp; (- x);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">Sum</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">	<span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x;i &gt; <span class="number">0</span>; i -= lowbit(i)) ans += bit[i];</div><div class="line">	<span class="keyword">return</span> ans;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x;i &lt;= n; i += lowbit(i)) bit[i] += y;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;n, &amp;q);</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= n; i++) &#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%lld"</span>, &amp;a);</div><div class="line">		update(i, a);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= q; i++) &#123;</div><div class="line">		<span class="keyword">int</span> oder;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;oder);</div><div class="line">		<span class="keyword">if</span>(oder == <span class="number">1</span>) &#123;</div><div class="line">			<span class="keyword">int</span> k, x;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;k, &amp;x);</div><div class="line">			update(k, x);</div><div class="line">		&#125; </div><div class="line">		<span class="keyword">if</span>(oder == <span class="number">2</span>) &#123;</div><div class="line">			<span class="keyword">int</span> l, r;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;l, &amp;r);</div><div class="line">			<span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, Sum(r) - Sum(l - <span class="number">1</span>));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="区间修改，区间查询"><a href="#区间修改，区间查询" class="headerlink" title="区间修改，区间查询"></a>区间修改，区间查询</h4><p>$P[]仍为A[]的差分数组，那么原数组的前缀和<br>A[1]+A[2]+……+ A[n]<br>=P[1]+(P[1]+P[2])+(P[1]+P[2]+P[3])+……+(P[1]+P[2]+……+P[n])<br>=n<em>P[1]+(n-1)</em>P[2]+(n-2)<em>P[3]+……+P[n]<br>=n</em>(P[1]+P[2]+P[3]+……+P[n])-(0<em>P[1]+1</em>P[2]+2<em>P[3]+……+(n-1)</em>P[n])$<br>观察减式两边，分别将P[i]和(i-1)p[i]建立两个树状数组BIT1和BIT2，BIT1就是<strong>差分数组</strong>，区间修改按上一例进行；BIT2的增量就不是x了，而是x*(i-1)。至于区间查询，我们已经知道原数组前缀和了，直接相减即可查询区间和。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1e6</span> + <span class="number">5</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n, q;</div><div class="line"><span class="keyword">int</span> a[MAXN];</div><div class="line"><span class="keyword">long</span> <span class="keyword">long</span> bit1[MAXN], bit2[MAXN];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> x &amp; -x;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">updata</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x;i &lt;= n; i += lowbit(i)) &#123;</div><div class="line">		bit1[i] += (<span class="keyword">long</span> <span class="keyword">long</span>) y;</div><div class="line">		bit2[i] += (<span class="keyword">long</span> <span class="keyword">long</span>) (x - <span class="number">1</span>) * y;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">Sum</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">	<span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = k; i; i -= lowbit(i)) &#123;</div><div class="line">		ans += (<span class="keyword">long</span> <span class="keyword">long</span>) bit1[i] * k - (<span class="keyword">long</span> <span class="keyword">long</span>) bit2[i];</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> ans;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;n, &amp;q);</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;a[i]);</div><div class="line">		updata(i, a[i] - a[i - <span class="number">1</span>]);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= q; i++) &#123;</div><div class="line">		<span class="keyword">int</span> opt, l, r, x;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;opt);</div><div class="line">		<span class="keyword">if</span>(opt == <span class="number">1</span>) &#123;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d %d %d"</span>, &amp;l, &amp;r, &amp;x);</div><div class="line">			updata(l, x);</div><div class="line">			updata(r + <span class="number">1</span>, -x);</div><div class="line">		&#125; </div><div class="line">		<span class="keyword">if</span>(opt == <span class="number">2</span>) &#123;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;l, &amp;r);</div><div class="line">			<span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, Sum(r) - Sum(l - <span class="number">1</span>));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="区间修改，单点查询"><a href="#区间修改，单点查询" class="headerlink" title="区间修改，单点查询"></a>区间修改，单点查询</h4><p>$对原数组A[]建一个差分数组P[i]=A[i]-A[i-1]那么A[i]=P[1]+P[2]+……+P[i]$<br>将差分数组P[]建立BIT，单点查询就是sum，区间修改就是update(left, x)和update(right+1, -x)，BIT求前缀和sum就是区间修改后的单点查询了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1e6</span> + <span class="number">5</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n, q, a[MAXN];</div><div class="line"><span class="keyword">long</span> <span class="keyword">long</span> p[MAXN], bit[MAXN];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">	<span class="keyword">return</span> x &amp; (- x);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">updata</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x;i &lt;= n; i += lowbit(i)) bit[i] += y;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">Sum</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">	<span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x;i &gt; <span class="number">0</span>; i -= lowbit(i)) &#123;</div><div class="line">		ans += bit[i];</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> ans;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;n, &amp;q);</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= n; i++) &#123;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;a[i]);</div><div class="line">		p[i] = a[i] - a[i - <span class="number">1</span>];</div><div class="line">		updata(i, p[i]);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>;i &lt;= q; i++) &#123;</div><div class="line">		<span class="keyword">int</span> oder;</div><div class="line">		<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;oder);</div><div class="line">		<span class="keyword">if</span>(oder == <span class="number">1</span>) &#123;</div><div class="line">			<span class="keyword">int</span> l, r, x;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d %d %d"</span>, &amp;l, &amp;r, &amp;x);</div><div class="line">			updata(l, x);</div><div class="line">			updata(r + <span class="number">1</span>, -x);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">int</span> x;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;x);</div><div class="line">			<span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, Sum(x));</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="二维树状数组-：单点修改，区间查询"><a href="#二维树状数组-：单点修改，区间查询" class="headerlink" title="二维树状数组 ：单点修改，区间查询"></a>二维树状数组 ：单点修改，区间查询</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1e4</span> + <span class="number">5</span>; </div><div class="line"></div><div class="line"><span class="keyword">int</span> n, m, opt;</div><div class="line"><span class="keyword">long</span> <span class="keyword">long</span> bit[MAXN][MAXN];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> x &amp; -x;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x; i &lt;= n; i += lowbit(i)) &#123;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = y; j &lt;= m; j += lowbit(j)) &#123;</div><div class="line">			bit[i][j] += k;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">Sum</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">	<span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = x; i &gt; <span class="number">0</span>; i -= lowbit(i)) &#123;</div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j = y; j &gt; <span class="number">0</span>; j -= lowbit(j)) &#123;</div><div class="line">			ans += bit[i][j];</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> ans;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;n, &amp;m);</div><div class="line">	<span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;opt) != EOF) &#123;</div><div class="line">		<span class="keyword">if</span>(opt == <span class="number">1</span>) &#123;</div><div class="line">			<span class="keyword">int</span> x, y, k;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d %d %d"</span>, &amp;x, &amp;y, &amp;k);</div><div class="line">			update(x, y, k);</div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">int</span> a, b, c, d;</div><div class="line">			<span class="built_in">scanf</span>(<span class="string">"%d %d %d %d"</span>, &amp;a, &amp;b, &amp;c, &amp;d);</div><div class="line">			<span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, Sum(c, d) - Sum(a - <span class="number">1</span>, d) - Sum(c, b - <span class="number">1</span>) + Sum(a - <span class="number">1</span>, b - <span class="number">1</span>));</div><div class="line">		&#125; </div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="二维树状数组-：区间修改，区间查询"><a href="#二维树状数组-：区间修改，区间查询" class="headerlink" title="二维树状数组 ：区间修改，区间查询"></a>二维树状数组 ：区间修改，区间查询</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> LL long long</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">2055</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n, m, arr[MAXN], opt;</div><div class="line"><span class="keyword">long</span> <span class="keyword">long</span> bit1[MAXN][MAXN], bit2[MAXN][MAXN], bit3[MAXN][MAXN], bit4[MAXN][MAXN];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">lowbit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123; <span class="keyword">return</span> x &amp; -x; &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> c, <span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = a; i &lt;= n; i += lowbit(i)) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = c; j &lt;= m; j += lowbit(j)) &#123;</div><div class="line">            bit1[i][j] += (LL)x;</div><div class="line">            bit2[i][j] += (LL)c * x;</div><div class="line">            bit3[i][j] += (LL)a * x;</div><div class="line">            bit4[i][j] += (LL)a * c * x;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">Sum</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</div><div class="line">    <span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = x; i; i -= lowbit(i)) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = y; j; j -= lowbit(j)) &#123;</div><div class="line">            ans += (LL)bit1[i][j] * (x + <span class="number">1</span>) * (y + <span class="number">1</span>) - (LL)bit2[i][j] * (x + <span class="number">1</span>) - (LL)bit3[i][j] * (y + <span class="number">1</span>) +</div><div class="line">                   (LL)bit4[i][j];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;n, &amp;m);</div><div class="line">    <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;opt) != EOF) &#123;</div><div class="line">        <span class="keyword">int</span> a, b, c, d, x;</div><div class="line">        <span class="keyword">if</span> (opt == <span class="number">1</span>) &#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d %d %d %d %d"</span>, &amp;a, &amp;b, &amp;c, &amp;d, &amp;x);</div><div class="line">            update(a, b, x);</div><div class="line">            update(c + <span class="number">1</span>, b, -x);</div><div class="line">            update(a, d + <span class="number">1</span>, -x);</div><div class="line">            update(c + <span class="number">1</span>, d + <span class="number">1</span>, x);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (opt == <span class="number">2</span>) &#123;</div><div class="line">            <span class="built_in">scanf</span>(<span class="string">"%d %d %d %d"</span>, &amp;a, &amp;b, &amp;c, &amp;d);</div><div class="line">            <span class="built_in">printf</span>(<span class="string">"%lld\n"</span>, Sum(c, d) + Sum(a - <span class="number">1</span>, b - <span class="number">1</span>) - Sum(a - <span class="number">1</span>, d) - Sum(c, b - <span class="number">1</span>));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/25/2020-07-25-数三角 题解/" rel="next" title="数三角 题解">
+                <i class="fa fa-chevron-left"></i> 数三角 题解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/07/28/2020-07-28-图论学习笔记1/" rel="prev" title="图论学习笔记1">
+                图论学习笔记1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Des Matières
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Ensemble
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">chenjg41</p>
+              <p class="site-description motion-element" itemprop="description">...</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">articles</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">1.1.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lowbit操作"><span class="nav-number">1.1.1.</span> <span class="nav-text">lowbit操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#update操作"><span class="nav-number">1.1.2.</span> <span class="nav-text">update操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sum操作"><span class="nav-number">1.1.3.</span> <span class="nav-text">Sum操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用模板"><span class="nav-number">1.2.</span> <span class="nav-text">常用模板</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单点修改，区间查询"><span class="nav-number">1.2.1.</span> <span class="nav-text">单点修改，区间查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区间修改，区间查询"><span class="nav-number">1.2.2.</span> <span class="nav-text">区间修改，区间查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区间修改，单点查询"><span class="nav-number">1.2.3.</span> <span class="nav-text">区间修改，单点查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维树状数组-：单点修改，区间查询"><span class="nav-number">1.2.4.</span> <span class="nav-text">二维树状数组 ：单点修改，区间查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二维树状数组-：区间修改，区间查询"><span class="nav-number">1.2.5.</span> <span class="nav-text">二维树状数组 ：区间修改，区间查询</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chenjg41</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Thème &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

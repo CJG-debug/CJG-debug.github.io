@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="图论,拓扑排序," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="叶子清除计划【第五周】题目描述⼩Y同学是⼀位数据结构⼤师同时也是⼀位园艺⼤师。
+秋天到了，⼩Y同学需要对学校内的⼀棵树展现他顶尖的修叶⽔平。
+学校内的这棵树是⼀颗拥有n个点的⽆根树，每次⼩Y会删去所有的叶⼦节点（即度数小于等于1的节点)，直到所有的点都被删除了为⽌。
+⼩Y现在想问你对于每个点，求出它是第⼏次操作中被删除的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="叶子清除计划【第五周】">
+<meta property="og:url" content="CJG-debug.github.io/2020/08/19/2020-08-19-叶子清除计划【第五周】 题解/index.html">
+<meta property="og:site_name" content="Scarecrow">
+<meta property="og:description" content="叶子清除计划【第五周】题目描述⼩Y同学是⼀位数据结构⼤师同时也是⼀位园艺⼤师。
+秋天到了，⼩Y同学需要对学校内的⼀棵树展现他顶尖的修叶⽔平。
+学校内的这棵树是⼀颗拥有n个点的⽆根树，每次⼩Y会删去所有的叶⼦节点（即度数小于等于1的节点)，直到所有的点都被删除了为⽌。
+⼩Y现在想问你对于每个点，求出它是第⼏次操作中被删除的。">
+<meta property="og:updated_time" content="2021-02-11T05:44:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="叶子清除计划【第五周】">
+<meta name="twitter:description" content="叶子清除计划【第五周】题目描述⼩Y同学是⼀位数据结构⼤师同时也是⼀位园艺⼤师。
+秋天到了，⼩Y同学需要对学校内的⼀棵树展现他顶尖的修叶⽔平。
+学校内的这棵树是⼀颗拥有n个点的⽆根树，每次⼩Y会删去所有的叶⼦节点（即度数小于等于1的节点)，直到所有的点都被删除了为⽌。
+⼩Y现在想问你对于每个点，求出它是第⼏次操作中被删除的。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="CJG-debug.github.io/2020/08/19/2020-08-19-叶子清除计划【第五周】 题解/"/>
+
+
+
+
+
+  <title>叶子清除计划【第五周】 | Scarecrow</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Scarecrow</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">nevergiveup</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Accueil
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="CJG-debug.github.io/2020/08/19/2020-08-19-叶子清除计划【第五周】 题解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="chenjg41">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Scarecrow">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">叶子清除计划【第五周】</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posté le</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-08-19T00:00:00+08:00">
+                2020-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/图论/" itemprop="url" rel="index">
+                    <span itemprop="name">图论</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="叶子清除计划【第五周】"><a href="#叶子清除计划【第五周】" class="headerlink" title="叶子清除计划【第五周】"></a>叶子清除计划【第五周】</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>⼩Y同学是⼀位数据结构⼤师同时也是⼀位园艺⼤师。</p>
+<p>秋天到了，⼩Y同学需要对学校内的⼀棵树展现他顶尖的修叶⽔平。</p>
+<p>学校内的这棵树是⼀颗拥有n个点的⽆根树，每次⼩Y会删去所有的叶⼦节点（即度数小于等于1的节点)，直到所有的点都被删除了为⽌。</p>
+<p>⼩Y现在想问你对于每个点，求出它是第⼏次操作中被删除的。<a id="more"></a></p>
+<h3 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h3><p>第⼀⾏⼀个数字n，表⽰树上节点个数</p>
+<p>接下来n−1⾏，每⾏两个数字u,v，表⽰树上的⼀条边。</p>
+<h3 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h3><p>⼀⾏n个数字，第i个数字表⽰节点i在第⼏次操作中被删除。</p>
+<h3 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h3><h4 id="样例输入1"><a href="#样例输入1" class="headerlink" title="样例输入1:"></a>样例输入1:</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="number">5</span></div><div class="line"><span class="number">1</span> <span class="number">2</span></div><div class="line"><span class="number">1</span> <span class="number">3</span></div><div class="line"><span class="number">2</span> <span class="number">4</span></div><div class="line"><span class="number">2</span> <span class="number">5</span></div></pre></td></tr></table></figure>
+<h4 id="样例输出1"><a href="#样例输出1" class="headerlink" title="样例输出1:"></a>样例输出1:</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">2</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></div></pre></td></tr></table></figure>
+<h4 id="样例输入2"><a href="#样例输入2" class="headerlink" title="样例输入2:"></a>样例输入2:</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="number">4</span></div><div class="line"><span class="number">1</span> <span class="number">2</span></div><div class="line"><span class="number">1</span> <span class="number">3</span></div><div class="line"><span class="number">1</span> <span class="number">4</span></div></pre></td></tr></table></figure>
+<h4 id="样例输出2"><a href="#样例输出2" class="headerlink" title="样例输出2:"></a>样例输出2:</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></div></pre></td></tr></table></figure>
+<h3 id="数据范围与提示"><a href="#数据范围与提示" class="headerlink" title="数据范围与提示"></a>数据范围与提示</h3><p>对于30%的数据，n≤1000</p>
+<p>对于100%的数据，2≤n≤100000,1≤u,v≤n</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先看到题目，所给树是一棵<strong>无根树</strong>,一棵没有特定的根节点的树，称为无根树。<br>所以任意选取图中某个点为根，均可将无根树转化成为有根树，即在输入时要双向加边。<br>因为每次是要将叶子节点删去，那么当入度为1时（假设此边所连点为根节点，此节点就是叶子节点），就应该删掉。<br>题目要求删除的顺序，所以就定义一个结构体，保存<strong>入度</strong>和<strong>删除的次序</strong>，通过以上推论可得删掉的节点的次序就应该是<strong>它倒数第二条边所连接的节点的次序加一</strong>。<br>用拓扑序变形就可解决。<br>分析至此，不难写出代码.</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">100005</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n;</div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[MAXN]; </div><div class="line"></div><div class="line"><span class="keyword">struct</span> node &#123;</div><div class="line">	<span class="keyword">int</span> in, flo;</div><div class="line">&#125; a[MAXN];</div><div class="line"></div><div class="line"><span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; q;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">topsort</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">		<span class="keyword">if</span> (a[i].in == <span class="number">1</span>) &#123;</div><div class="line">			q.push(i);</div><div class="line">			a[i].flo = <span class="number">1</span>;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">while</span> (q.size()) &#123;</div><div class="line">		<span class="keyword">int</span> u = q.front();</div><div class="line">		q.pop();</div><div class="line"><span class="comment">//		printf ("%d: ", u);</span></div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; G[u].size(); i++) &#123;</div><div class="line">			<span class="keyword">int</span> v = G[u][i];</div><div class="line">			a[v].in --;</div><div class="line">			<span class="keyword">if</span> (a[v].in == <span class="number">1</span>) &#123;</div><div class="line"><span class="comment">//				printf ("%d ", v);</span></div><div class="line">				a[v].flo = a[u].flo + <span class="number">1</span>;</div><div class="line">				q.push(v);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line"><span class="comment">//		printf ("\n");</span></div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">scanf</span> (<span class="string">"%d"</span>, &amp;n);</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, u, v; i &lt; n; i++) &#123;</div><div class="line">		<span class="built_in">scanf</span> (<span class="string">"%d %d"</span>, &amp;u, &amp;v);</div><div class="line">		G[u].push_back(v);</div><div class="line">		G[v].push_back(u);</div><div class="line">		a[u].in ++, a[v].in ++;</div><div class="line">	&#125;</div><div class="line"><span class="comment">//	for (int i = 1; i &lt;= n; i++) &#123;</span></div><div class="line"><span class="comment">//		printf ("%d %d\n", a[i].flo, a[i].in);</span></div><div class="line"><span class="comment">//	&#125;</span></div><div class="line">	topsort();</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">		<span class="built_in">printf</span> (<span class="string">"%d "</span>, a[i].flo);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/图论/" rel="tag"># 图论</a>
+          
+            <a href="/tags/拓扑排序/" rel="tag"># 拓扑排序</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/17/2020-08-17-构造完全图 题解/" rel="next" title="构造完全图 题解">
+                <i class="fa fa-chevron-left"></i> 构造完全图 题解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/19/2020-08-19-「一本通 3.1 练习 4」Tree 题解/" rel="prev" title="「一本通 3.1 练习 4」Tree 题解">
+                「一本通 3.1 练习 4」Tree 题解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table Des Matières
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Ensemble
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">chenjg41</p>
+              <p class="site-description motion-element" itemprop="description">...</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">articles</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">categories</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#叶子清除计划【第五周】"><span class="nav-number">1.</span> <span class="nav-text">叶子清除计划【第五周】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入格式"><span class="nav-number">1.2.</span> <span class="nav-text">输入格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出格式"><span class="nav-number">1.3.</span> <span class="nav-text">输出格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#样例"><span class="nav-number">1.4.</span> <span class="nav-text">样例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#样例输入1"><span class="nav-number">1.4.1.</span> <span class="nav-text">样例输入1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#样例输出1"><span class="nav-number">1.4.2.</span> <span class="nav-text">样例输出1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#样例输入2"><span class="nav-number">1.4.3.</span> <span class="nav-text">样例输入2:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#样例输出2"><span class="nav-number">1.4.4.</span> <span class="nav-text">样例输出2:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据范围与提示"><span class="nav-number">1.5.</span> <span class="nav-text">数据范围与提示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">chenjg41</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Thème &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
