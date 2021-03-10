@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="图论,欧拉回路," />
+  <meta name="keywords" content="题解," />
 
 
 
@@ -86,16 +86,16 @@
 
 
 
-<meta name="description" content="Ant Trip分析题意很简单，爆搜的时间复杂度比较高，不考虑。应该使用欧拉回路的相关知识求解。">
+<meta name="description" content="随手胡的一个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ant Trip 题解">
-<meta property="og:url" content="CJG-debug.github.io/2020/08/20/2020-08-20-Ant Trip 题解/index.html">
+<meta property="og:title" content="csp2019口胡题解">
+<meta property="og:url" content="CJG-debug.github.io/2021/03/09/2021-03-09-csp2019口胡题解/index.html">
 <meta property="og:site_name" content="Scarecrow">
-<meta property="og:description" content="Ant Trip分析题意很简单，爆搜的时间复杂度比较高，不考虑。应该使用欧拉回路的相关知识求解。">
-<meta property="og:updated_time" content="2021-02-11T05:44:42.000Z">
+<meta property="og:description" content="随手胡的一个">
+<meta property="og:updated_time" content="2021-03-10T06:04:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ant Trip 题解">
-<meta name="twitter:description" content="Ant Trip分析题意很简单，爆搜的时间复杂度比较高，不考虑。应该使用欧拉回路的相关知识求解。">
+<meta name="twitter:title" content="csp2019口胡题解">
+<meta name="twitter:description" content="随手胡的一个">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="CJG-debug.github.io/2020/08/20/2020-08-20-Ant Trip 题解/"/>
+  <link rel="canonical" href="CJG-debug.github.io/2021/03/09/2021-03-09-csp2019口胡题解/"/>
 
 
 
 
 
-  <title>Ant Trip 题解 | Scarecrow</title>
+  <title>csp2019口胡题解 | Scarecrow</title>
   
 
 
@@ -302,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="CJG-debug.github.io/2020/08/20/2020-08-20-Ant Trip 题解/">
+    <link itemprop="mainEntityOfPage" href="CJG-debug.github.io/2021/03/09/2021-03-09-csp2019口胡题解/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="chenjg41">
@@ -319,7 +319,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Ant Trip 题解</h1>
+          <h1 class="post-title" itemprop="name headline">csp2019口胡题解</h1>
         
 
         <div class="post-meta">
@@ -331,8 +331,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-20T00:00:00+08:00">
-                2020-08-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-09T00:00:00+08:00">
+                2021-03-09
               </time>
             
 
@@ -354,8 +354,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/图论/" itemprop="url" rel="index">
-                    <span itemprop="name">图论</span>
+                  <a href="/categories/题解/" itemprop="url" rel="index">
+                    <span itemprop="name">题解</span>
                   </a>
                 </span>
 
@@ -391,13 +391,58 @@
       
 
       
-        <h2 id="Ant-Trip"><a href="#Ant-Trip" class="headerlink" title="Ant Trip"></a><a href="https://loj.ac/problem/10108" target="_blank" rel="external">Ant Trip</a></h2><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>题意很简单，爆搜的时间复杂度比较高，不考虑。<br>应该使用欧拉回路的相关知识求解。<a id="more"></a></p>
-<h3 id="intn"><a href="#intn" class="headerlink" title="intn()"></a>intn()</h3><p>输入时将两个节点的入度都加一（无向），然后将两个节点合并在一个<strong>连通图</strong>中.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, u, v; i &lt;= m; i++) &#123;</div><div class="line">      <span class="built_in">scanf</span> (<span class="string">"%d %d"</span>, &amp;u, &amp;v);</div><div class="line">      in[v] ++, in[u] ++;</div><div class="line">      UnionSet(u, v);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><font color="white">TFW居然都不知道要将两个节点合并在一个<strong>连通图</strong>中</font></p>
-<h3 id="work"><a href="#work" class="headerlink" title="work()"></a>work()</h3><h4 id="step1"><a href="#step1" class="headerlink" title="step1"></a>step1</h4><p>从1~n循环，依次枚举，记录每个连通图中的点数。<br>用一个ans[]数组保存连通图中度为<strong>奇数</strong>的节点。</p>
-<h4 id="step2"><a href="#step2" class="headerlink" title="step2"></a>step2</h4><p>再枚举一遍<br>如果一个连通图中的节点数不大于1，就不用画，跳过。<br>如果ans[]为0，这次图是一个欧拉回路，就sum++<br>如果ans[]不为零 sum += ans[]/2   <font color="white">TFW只顾抄代码，连ans[]/2都不知道啥意思</font><br>因为一笔只能够画掉两个<strong>奇数</strong>度数的节点<font color="white"> （因为TFW不停问，特此强调) ,</font>所以只加上ans[]/2</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1e5</span> + <span class="number">5</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n, m, sum;</div><div class="line"><span class="keyword">int</span> in[MAXN], num[MAXN], ans[MAXN], fa[MAXN];</div><div class="line"><span class="comment">/* num -&gt; 保存一个连通块里有几个节点*/</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">FindSet</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</div><div class="line">	<span class="keyword">if</span> (fa[v] == v) <span class="keyword">return</span> v;</div><div class="line">	<span class="keyword">else</span> <span class="keyword">return</span> fa[v] = FindSet(fa[v]);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">UnionSet</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> v)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> x = FindSet(u);</div><div class="line">	<span class="keyword">int</span> y = FindSet(v);</div><div class="line">	<span class="keyword">if</span> (x == y) <span class="keyword">return</span> ;</div><div class="line">	<span class="keyword">else</span> fa[x] = y;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">while</span> (<span class="built_in">scanf</span> (<span class="string">"%d %d"</span>, &amp;n, &amp;m) != EOF) &#123;</div><div class="line">		sum = <span class="number">0</span>;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">			fa[i] = i;</div><div class="line">			ans[i] = <span class="number">0</span>;</div><div class="line">			num[i] = <span class="number">0</span>;</div><div class="line">			in[i] = <span class="number">0</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>, u, v; i &lt;= m; i++) &#123;</div><div class="line">			<span class="built_in">scanf</span> (<span class="string">"%d %d"</span>, &amp;u, &amp;v);</div><div class="line">			in[v] ++, in[u] ++;</div><div class="line">			UnionSet(u, v);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">			num[FindSet(i)] ++;</div><div class="line">			<span class="keyword">if</span> (in[i] % <span class="number">2</span> == <span class="number">1</span>) &#123;</div><div class="line">				ans[FindSet(i)] ++;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">			<span class="keyword">if</span> (num[i] &lt;= <span class="number">1</span>) <span class="keyword">continue</span>;</div><div class="line">			<span class="keyword">if</span> (ans[i] == <span class="number">0</span>) sum ++;</div><div class="line">			<span class="keyword">else</span> &#123;</div><div class="line">				sum += ans[i] / <span class="number">2</span>;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="built_in">printf</span> (<span class="string">"%d\n"</span>, sum);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <blockquote>
+<p>随手胡的一个</p>
+</blockquote>
+<a id="more"></a>   
+<h3 id="T1"><a href="#T1" class="headerlink" title="T1"></a>T1</h3><h4 id="格雷码"><a href="#格雷码" class="headerlink" title="格雷码"></a><a href="http://222.180.160.110:1024/contest/1364/problem/1" target="_blank" rel="external">格雷码</a></h4><p>打表找规律。    </p>
+<p>可以发现答案为 $k$^$k/2$后转二进制的每一位的值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> LL unsigned long long</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line">LL n, k;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	freopen(<span class="string">"code.in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</div><div class="line">	freopen(<span class="string">"code.out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</div><div class="line">	<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; k;</div><div class="line">	k ^= (k / <span class="number">2</span>);</div><div class="line">	<span class="keyword">while</span> (n--) &#123;</div><div class="line">		<span class="built_in">cout</span> &lt;&lt; ((k &gt;&gt; n) &amp; <span class="number">1</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="T2"><a href="#T2" class="headerlink" title="T2"></a>T2</h3><h4 id="括号树"><a href="#括号树" class="headerlink" title="括号树"></a><a href="http://222.180.160.110:1024/contest/1364/problem/2" target="_blank" rel="external">括号树</a></h4><p>考试的时候打了一个假的对拍。。。    </p>
+<p>暴力写错了。    </p>
+<p>然后就GG了。    </p>
+<p>直接$dfs$即可。维护一个$pre$表示与当前的$)$匹配的$($的位置。    </p>
+<p>设$len[i]$为从根节点匹配到$i$号节点时成功匹配的个数。    </p>
+<p>那么则有：$len[i] = len[pre - 1] + 1$。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stack&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> LL long long</span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">5</span> * <span class="number">1e5</span> + <span class="number">5</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n, fa[MAXN], len[MAXN];</div><div class="line">LL sum[MAXN], ans;</div><div class="line"><span class="keyword">char</span> s[MAXN];</div><div class="line"><span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; t;</div><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; G[MAXN];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> u, <span class="keyword">int</span> dep)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> pre = <span class="number">0</span>;</div><div class="line">	<span class="keyword">if</span> (s[u] == <span class="string">'('</span>) </div><div class="line">		t.push(dep), len[dep] = <span class="number">0</span>;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		<span class="keyword">if</span> (!t.empty()) &#123;</div><div class="line">			pre = t.top();</div><div class="line">			t.pop();</div><div class="line">			len[dep] = len[pre - <span class="number">1</span>] + <span class="number">1</span>;</div><div class="line">		&#125; <span class="keyword">else</span> len[dep] = <span class="number">0</span>;</div><div class="line">	&#125;</div><div class="line">	sum[u] = sum[fa[u]] + len[dep];</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; G[u].size(); i++) &#123;</div><div class="line">		<span class="keyword">int</span> v = G[u][i];</div><div class="line">		<span class="keyword">if</span> (v == fa[u]) <span class="keyword">continue</span>;</div><div class="line">		dfs(v, dep + <span class="number">1</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">if</span> (s[u] == <span class="string">'('</span>) t.pop();</div><div class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (pre != <span class="number">0</span>) &#123;</div><div class="line">		t.push(pre);</div><div class="line">	&#125;</div><div class="line">	len[dep] = <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	freopen(<span class="string">"brackets.in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</div><div class="line">	freopen(<span class="string">"brackets.out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</div><div class="line">	<span class="built_in">scanf</span> (<span class="string">"%d"</span>, &amp;n);</div><div class="line">	<span class="built_in">scanf</span> (<span class="string">"%s"</span>, s + <span class="number">1</span>);</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; i++) &#123;</div><div class="line">		<span class="built_in">scanf</span> (<span class="string">"%d"</span>, &amp;fa[i]);</div><div class="line">		G[i].push_back(fa[i]);</div><div class="line">		G[fa[i]].push_back(i);</div><div class="line">	&#125;</div><div class="line">	ans = <span class="number">0</span>;</div><div class="line">	dfs(<span class="number">1</span>, <span class="number">1</span>);</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">		ans ^= (i * sum[i]);</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">printf</span> (<span class="string">"%lld\n"</span>, ans);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="T3"><a href="#T3" class="headerlink" title="T3"></a>T3</h3><h3 id="T4"><a href="#T4" class="headerlink" title="T4"></a>T4</h3><h4 id="Emiya-家今天的饭"><a href="#Emiya-家今天的饭" class="headerlink" title="Emiya 家今天的饭"></a><a href="http://222.180.160.110:1024/contest/1364/problem/4" target="_blank" rel="external">Emiya 家今天的饭</a></h4><p>正难则反。    </p>
+<p>然而不知道怎么打。。。    </p>
+<p>看了题解恍然大雾。</p>
+<p>设$dp[i]$为在没有限制下选$i$道菜的方案数。</p>
+<p>$dp[i] = dp[i - 1] \times sum[i]$</p>
+<p>其中$sum[i]$为第$i$行$a[i][j]$的和。    </p>
+<p>设$g[i][j]$为在当前的不合法的主菜$c$的情况下用前$i$种烹饪方法后不合法主菜$c$出现的的次数比其他的次数多$j$次。</p>
+<p>$g[i][j] = (g[i - 1][j] + g[i - 1][j - 1] <em> a[i][c] + g[i - 1][j + 1] </em> (sum[i] - a[i][c])) % mod;$</p>
+<p>要注意mod…</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">205</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXM = <span class="number">2005</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> mod = <span class="number">998244353</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> n, m;</div><div class="line"><span class="keyword">long</span> <span class="keyword">long</span> a[MAXN][MAXM], sum[MAXN], dp[MAXM], g[MAXN][MAXM], ans;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    freopen(<span class="string">"meal.in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</div><div class="line">    freopen(<span class="string">"meal.out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</div><div class="line">    <span class="built_in">scanf</span> (<span class="string">"%d %d"</span>, &amp;n, &amp;m);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= m; j++) &#123;</div><div class="line">            <span class="built_in">scanf</span> (<span class="string">"%lld"</span>, &amp;a[i][j]);</div><div class="line">            sum[i] = (a[i][j] + sum[i]) % mod;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    dp[<span class="number">0</span>] = <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j; j--) &#123;</div><div class="line">            dp[j] += (dp[j - <span class="number">1</span>] * sum[i]) % mod;</div><div class="line">            dp[j] %= mod;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) ans = (ans + dp[i]) % mod;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> c = <span class="number">1</span>; c &lt;= m; c++) &#123;</div><div class="line">        <span class="built_in">memset</span>(g, <span class="number">0</span>, <span class="keyword">sizeof</span>(g));</div><div class="line">        g[<span class="number">0</span>][n] = <span class="number">1</span>;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= n + i; j++) &#123;</div><div class="line">                g[i][j] = (g[i - <span class="number">1</span>][j] + g[i - <span class="number">1</span>][j - <span class="number">1</span>] * a[i][c] + g[i - <span class="number">1</span>][j + <span class="number">1</span>] * (sum[i] - a[i][c])) % mod;</div><div class="line">                <span class="comment">// printf("%lld %lld %lld\n", i, j, g[i][j]);</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = n + <span class="number">1</span>; i &lt;= n * <span class="number">2</span>; i++) &#123;</div><div class="line">            ans = (ans - g[n][i] + mod) % mod;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">printf</span> (<span class="string">"%lld\n"</span>, ans % mod);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="T5"><a href="#T5" class="headerlink" title="T5"></a>T5</h3><p><a href="http://222.180.160.110:1024/contest/1364/problem/5" target="_blank" rel="external">划分</a></p>
+<p>这道题有一个很显然的单调性。    </p>
+<p>思路源于<strong>干草堆</strong>一题。    </p>
+<p>不知道的去看LH题解。    </p>
+<p>题目要求得在满足$\sum_{i=1}^{k_1} a<em>i \leq \sum</em>{i=k_1+1}^{k_2} a<em>i \leq \cdots \leq \sum</em>{i=k_p+1}^{n} a_i $的情况下</p>
+<p>求$(\sum_{i=1}^{k_1} a<em>i)^2 + (\sum</em>{i=k_1+1}^{k_2} a<em>i)^2 + \cdots + (\sum</em>{i=k_p+1}^{n} a_i)^2 $的最小值。    </p>
+<p>那么可以<strong>贪心</strong>去想。假设划分了$k$段，则$\sum_{i=k_p+1}^{n} a_i$肯定对答案的贡献最大。    </p>
+<p>如果要使得整个答案最小，就必须让$\sum_{i=k_p+1}^{n} a_i$的值最小。    </p>
+<p>那么去掉$\sum_{i=k_p+1}^{n} a_i$ 一段，看前面的部分，使其值最小必须让<br>前一段的值最小。    </p>
+<p>可以得出结论<strong>分段分的越多越好</strong>。</p>
+<p>即$a ^ 2 + b ^ 2 \leq (a + b) ^ 2$。</p>
+<p>那么设分到第$i$号位，所付出的最小代价为$dp[i]$，$base[i]$以当前位为末尾所分块的大小，$sum[i]$为前缀和,由推论可知$dp[i]$一定是由它前面第一个满足条件的$j$转移过来的。    </p>
+<p>则$dp[i] = min { dp[j] + (sum[i] - sum[j])) ^ 2 | base[j]\leq sum[i] - sum[j]}$</p>
+<h4 id="64pts"><a href="#64pts" class="headerlink" title="64pts"></a>64pts</h4><p>$n^2$直接整。    </p>
+<font color="red">不要乱加<code>break</code>。</font>
 
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">memset</span>(dp, <span class="number">0x3f</span>, <span class="keyword">sizeof</span>(dp));</div><div class="line">dp[<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line">base[<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++) <span class="keyword">if</span> (base[j] &lt;= sum[i] - sum[j]) &#123;</div><div class="line">        dp[i] = min(dp[i], dp[j] + (sum[i] - sum[j]) * (sum[i] - sum[j]));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="88pts"><a href="#88pts" class="headerlink" title="88pts"></a>88pts</h4><p>既然有单调性，那就可以直接搞。</p>
+<p>时间复杂度$O(n)$</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">memset</span>(dp, <span class="number">0x3f</span>, <span class="keyword">sizeof</span>(dp));</div><div class="line">dp[<span class="number">0</span>] = <span class="number">0</span>;</div><div class="line"><span class="keyword">int</span> head = <span class="number">1</span>, tail = <span class="number">0</span>;</div><div class="line">q[++tail] = <span class="number">0</span>;</div><div class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</div><div class="line">	<span class="keyword">while</span> (head &lt; tail &amp;&amp; base[q[head + <span class="number">1</span>]] + sum[q[head + <span class="number">1</span>]] &lt;= sum[i]) head++;</div><div class="line">    <span class="keyword">int</span> j = q[head];</div><div class="line">    dp[i] = dp[j] + (sum[i] - sum[j]) * (sum[i] - sum[j]);</div><div class="line">    base[i] = sum[i] - sum[j];</div><div class="line">    <span class="keyword">while</span>(head &lt; tail &amp;&amp; base[q[tail]] + sum[q[tail]] &gt;= base[i] + sum[i]) tail--;</div><div class="line">    q[++tail] = i;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="100pts"><a href="#100pts" class="headerlink" title="100pts"></a>100pts</h4><p>好像要高精。<br>先咕了。</p>
+<h4 id="Unkownpts"><a href="#Unkownpts" class="headerlink" title="Unkownpts"></a>Unkownpts</h4><p>突然想到的。</p>
+<p>因为有单调性，所以二分也能用。    </p>
+<p>时间复杂度$O(nlog_n)$</p>
+<p>可能会有点儿卡。    </p>
+<p><del>反正得分比64多</del></p>
+<p>口胡的，没有代码。</p>
+<h3 id="T6"><a href="#T6" class="headerlink" title="T6"></a>T6</h3>
       
     </div>
     
@@ -414,9 +459,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/图论/" rel="tag"># 图论</a>
-          
-            <a href="/tags/欧拉回路/" rel="tag"># 欧拉回路</a>
+            <a href="/tags/题解/" rel="tag"># 题解</a>
           
         </div>
       
@@ -429,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/08/19/2020-08-19-「一本通 3.1 练习 4」Tree 题解/" rel="next" title="「一本通 3.1 练习 4」Tree 题解">
-                <i class="fa fa-chevron-left"></i> 「一本通 3.1 练习 4」Tree 题解
+              <a href="/2021/02/11/2020-07-29-最短路模板整理/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
               </a>
             
           </div>
@@ -438,10 +481,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/08/24/2020-08-24-RMQ算法总结/" rel="prev" title="RMQ算法总结">
-                RMQ算法总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -577,7 +616,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ant-Trip"><span class="nav-number">1.</span> <span class="nav-text">Ant Trip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#intn"><span class="nav-number">2.1.</span> <span class="nav-text">intn()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#work"><span class="nav-number">2.2.</span> <span class="nav-text">work()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#step1"><span class="nav-number">2.2.1.</span> <span class="nav-text">step1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#step2"><span class="nav-number">2.2.2.</span> <span class="nav-text">step2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#T1"><span class="nav-number">1.</span> <span class="nav-text">T1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#格雷码"><span class="nav-number">1.1.</span> <span class="nav-text">格雷码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T2"><span class="nav-number">2.</span> <span class="nav-text">T2</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#括号树"><span class="nav-number">2.1.</span> <span class="nav-text">括号树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T3"><span class="nav-number">3.</span> <span class="nav-text">T3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T4"><span class="nav-number">4.</span> <span class="nav-text">T4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Emiya-家今天的饭"><span class="nav-number">4.1.</span> <span class="nav-text">Emiya 家今天的饭</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T5"><span class="nav-number">5.</span> <span class="nav-text">T5</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#64pts"><span class="nav-number">5.1.</span> <span class="nav-text">64pts</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#88pts"><span class="nav-number">5.2.</span> <span class="nav-text">88pts</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#100pts"><span class="nav-number">5.3.</span> <span class="nav-text">100pts</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unkownpts"><span class="nav-number">5.4.</span> <span class="nav-text">Unkownpts</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#T6"><span class="nav-number">6.</span> <span class="nav-text">T6</span></a></li></ol></div>
             
 
           </div>
